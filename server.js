@@ -7,10 +7,39 @@ app.use(express.json()) /// klarer å lese json filer som kommer inn i request b
 app.use(express.static("public")) /// forteller serveren at den skal bruke filer fra public mappen
 
 
+// IP logging (bedre versjon)
+app.use((req, res, next) => {
+    const ip =
+        req.headers["x-forwarded-for"] ||
+        req.socket.remoteAddress;
+
+    const log = {
+        ip,
+        time: new Date().toISOString(),
+        url: req.url
+    };
+
+    let logs = [];
+    if (fs.existsSync("iplogs.json")) {
+        try {
+            logs = JSON.parse(fs.readFileSync("iplogs.json"));
+        } catch {
+            logs = [];
+        }
+    }
+
+    logs.push(log);
+    fs.writeFileSync("iplogs.json", JSON.stringify(logs, null, 2));
+
+    next();
+});
+
+
 /// dette er mine json filer som lagrer data til brukeren
 const TODO_FILE = "data.json" 
 const PROBLEM_FILE = "problemer.json"
 const NOTES_FILE = "notes.json"
+
 
 /// denne leser filer 
 function readJSON(file) {
@@ -18,11 +47,11 @@ function readJSON(file) {
         if (!fs.existsSync(file)) return [] /// lager en [] hvis filen ikke finnes (fortsatt tom men finnes)
         const data = fs.readFileSync(file, "utf8") /// leser filen som tekst 
         if (data) {
-    return JSON.parse(data)
-} else {
-    return []
-}
-    } catch { ///returnerer tom liste som hindrer kræsj og feilkommunikasjon
+            return JSON.parse(data)
+        } else {
+            return []
+        }
+    } catch {
         return []
     }
 }
@@ -30,31 +59,31 @@ function readJSON(file) {
 
 /// brukes for å lagre data
 function writeJSON(file, data) { 
-    fs.writeFileSync(file, JSON.stringify(data, null, 2)) /// gjør json til js også til tekst og skriver til en fil
+    fs.writeFileSync(file, JSON.stringify(data, null, 2))
 }
 
 
 /// TODO
-app.get("/todos", (req, res) => { /// frontend spør om todo
-    res.json(readJSON(TODO_FILE)) /// sender tilbake json data fra TODO_FILE
+app.get("/todos", (req, res) => {
+    res.json(readJSON(TODO_FILE))
 })
 
 app.post("/todos", (req, res) => {
-    const todos = readJSON(TODO_FILE)  /// henter gamle TODOs
+    const todos = readJSON(TODO_FILE)
 
-    todos.push({ /// det brukeren skriver blir pusha inn i TODO filen
+    todos.push({
         task: req.body.task,
-        done: false /// todo er ikke ferdig ennå
+        done: false
     })
 
-    writeJSON(TODO_FILE, todos) /// skriver nye oppdaterte todos i filen
+    writeJSON(TODO_FILE, todos)
 
-    res.json({ message: "Todo lagret" }) /// frontend får vite at dette er gjort
+    res.json({ message: "Todo lagret" })
 })
 
 // Notater
 app.get("/notes", (req, res) => {
-    res.json(readJSON(NOTES_FILE)) /// sender tilbake json data fra NOTES_FILE
+    res.json(readJSON(NOTES_FILE))
 })
 
 app.post("/notes", (req, res) => {
@@ -66,7 +95,7 @@ app.post("/notes", (req, res) => {
 
     writeJSON(NOTES_FILE, notes)
 
-    res.json({ message: "Notat lagret" }) /// frontend får vite at dette er gjort
+    res.json({ message: "Notat lagret" })
 })
 
 // Problemer
@@ -80,7 +109,7 @@ app.post("/problemer", (req, res) => {
 
     writeJSON(PROBLEM_FILE, problemer)
 
-    res.json({ message: "Problem rapportert" }) /// frontend får vite at dette er gjort
+    res.json({ message: "Problem rapportert" })
 })
 
 
