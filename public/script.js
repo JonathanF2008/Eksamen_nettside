@@ -48,16 +48,7 @@ async function loadTodos() { /// henter todos fra backend (serveren)
 loadTodos() /// oppdaterer for når siden siden lastes inn
 
 
-/*
-async function refresh() {
-    const res = await fetch("/refresh", { /// sender request til backend når knappen blir trykket på
-        method: "POST"
-    })
-    
-    const data = await res.json() 
-    console.log(data)
-    location.reload() /// laster siden på nytt
-} */
+
 
 /// lager nytt notat
 async function addNote() { 
