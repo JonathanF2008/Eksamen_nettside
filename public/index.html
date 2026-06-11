@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo og Notat applikasjon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <button onclick="refresh()">Pull fra github</button>
+
+    <button onclick="reportProblem()">
+        Rapporter problemer
+    </button>
+
+    <h1>Todo og notat applikasjon</h1>
+
+    <section>
+        <h2>Todo liste</h2>
+
+        <input id="todoInput" placeholder="Skriv todo" />
+        <button onclick="addTodo()">Legg til</button>
+
+        <ul id="TodoList"></ul>
+    </section>
+
+    
+
+    
+    <section>
+        <h2>Notater</h2>
+
+        <textarea id="noteInput" placeholder="Skriv notat"></textarea>
+        <br>
+        <button onclick="addNote()">Lagre notat</button>
+
+        <ul id="noteList"></ul>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
