@@ -7,10 +7,10 @@ app.use(express.json()) /// klarer å lese json filer som kommer inn i request b
 app.use(express.static("public")) /// forteller serveren at den skal bruke filer fra public mappen
 
 
-// IP logging (bedre versjon)
+// IP logging
 app.use((req, res, next) => {
     const ip =
-        req.headers["x-forwarded-for"] ||
+        req.headers["x-forwarded-for"]?.split(",")[0] ||
         req.socket.remoteAddress;
 
     const log = {
@@ -20,16 +20,18 @@ app.use((req, res, next) => {
     };
 
     let logs = [];
-    if (fs.existsSync("iplogs.json")) {
-        try {
-            logs = JSON.parse(fs.readFileSync("iplogs.json"));
-        } catch {
-            logs = [];
+
+    try {
+        if (fs.existsSync("./iplogs.json")) {
+            logs = JSON.parse(fs.readFileSync("./iplogs.json", "utf8"));
         }
+    } catch (err) {
+        logs = [];
     }
 
     logs.push(log);
-    fs.writeFileSync("iplogs.json", JSON.stringify(logs, null, 2));
+
+    fs.writeFileSync("./iplogs.json", JSON.stringify(logs, null, 2));
 
     next();
 });
