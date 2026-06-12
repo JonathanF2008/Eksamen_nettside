@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 
 
 /// dette er mine json filer som lagrer data til brukeren
-const TODO_FILE = "data.json" 
+const TODO_FILE = "todo.json" 
 const PROBLEM_FILE = "problemer.json"
 const NOTES_FILE = "notes.json"
 
@@ -116,7 +116,7 @@ app.post("/problemer", (req, res) => {
 
 
 app.post("/refresh", (req, res) => {
-    exec("git pull", (error, stdout, stderr) => { 
+    exec("cd /root/Eksamen_nettside && git pull", (error, stdout, stderr) => { 
         if (error) {
             return res.json({ error: stderr }) 
         }
