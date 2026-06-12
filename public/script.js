@@ -13,23 +13,6 @@ async function addTodo() {
     loadTodos() /// oppdaterer todo listen
 }
 
-/// feilrapportering
-async function reportProblem() {
-    const text = prompt("Beskriv problemet:") /// åpner en pop up hvor du kan skrive hva som helst
-
-    if (!text) return /// hvis det er tomt skal den stoppe funksjonen
-
-    /// sender problemer til backend 
-    await fetch("/problemer", { 
-        method: "POST", /// 
-        headers: { "Content-Type": "application/json" }, 
-        body: JSON.stringify({ text }) /// det brukeren skrev blir sendt til backend
-    })
-
-    alert("Takk for tilbakemelding!") 
-}
-
-
 
 async function loadTodos() { /// henter todos fra backend (serveren)
     const res = await fetch("/todos") /// get request til serveren 
