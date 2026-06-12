@@ -16,7 +16,6 @@ ssh fra mac terminal:
 
 Åpne terminalen på maccen 
 
-
 Git kloning:
 
 apt update 
@@ -52,5 +51,3 @@ node server.js
 i mappen du har filen i og den vil kjøre på port 3000. 
 
 Du går i din browser og skriver ip-en til proxmoxen (sjekker med ip a) og skriver http://192.168.xxx.xxx:3000
-
-

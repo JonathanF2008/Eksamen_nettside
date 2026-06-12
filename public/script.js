@@ -32,12 +32,11 @@ loadTodos() /// oppdaterer for når siden siden lastes inn
 
 
 async function refresh() {
-    const res = await fetch("/refresh", { /// sender request til backend når knappen blir trykket på
+    const res = await fetch("/refresh", { /// sender request til backend 
         method: "POST"
     })
     
     const data = await res.json() 
-    console.log(data)
     location.reload() /// laster siden på nytt
 }
 
