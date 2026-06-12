@@ -1,5 +1,5 @@
 # eksamen_oppgave
-Oppgave til eksamen 10/6.2026
+Oppgave til eksamen 12.06.2026
 
 
 # Hvordan hoste en server med egen proxmox
